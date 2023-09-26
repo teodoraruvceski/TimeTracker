@@ -17,7 +17,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ selectedProject, setSelectedProject, projects, addProject }) => {
 
   const [openWindow, setOpenWindow] = useState(false);
-  const projectsService = new ProjectsService('https://localhost:44385');
+  const projectsService = new ProjectsService();
 
   const handleSelectChange = (e: any) => {
     const value = e.target.value;
@@ -42,25 +42,23 @@ const Navbar: React.FC<NavbarProps> = ({ selectedProject, setSelectedProject, pr
     }
   };
 
-
   return (
     <AppBar position="static">
       <Toolbar sx={{backgroundColor: '#af7fd4'}} >
         <Typography sx={{fontWeight: 'bold', width:'25%'}} variant="h5">Time Tracker</Typography>
         <Box sx={{marginLeft: '50vw', display: 'flex', alignItems: 'center',width: '60vw' }}>
-        
           <Button onClick={()=>setOpenWindow(true)}
-          sx={{
-            color: '#672e94',
-            backgroundColor: 'white', 
-            height: '5vh', 
-            borderRadius: '10px',
-            width: '40%',
-            marginRight: '1vw',
-            '&:hover': {
-              backgroundColor: '#e9daf5',
-              borderColor: '#af7fd4' }}} >
-              Add Project
+            sx={{
+              color: '#672e94',
+              backgroundColor: 'white', 
+              height: '5vh', 
+              borderRadius: '10px',
+              width: '40%',
+              marginRight: '1vw',
+              '&:hover': {
+                backgroundColor: '#e9daf5',
+                borderColor: '#af7fd4' }}} >
+            Add Project
           </Button>
           <Select 
             onChange={handleSelectChange}
@@ -70,8 +68,7 @@ const Navbar: React.FC<NavbarProps> = ({ selectedProject, setSelectedProject, pr
             height: '5vh', 
             borderRadius: '10px',
             width: '40%' }}>
-             <MenuItem value="NoProject">NoProject</MenuItem>
-            {/* <MenuItem onMouseDown={handleInputClick}><OutlinedInput onMouseDown={handleInputClick}  placeholder='Add new project...' sx={{height: ' 7vh'}} /></MenuItem> */}
+            <MenuItem value="NoProject">NoProject</MenuItem>
             {projects.map((project: Project) => (
               <MenuItem key={project.id} value={project.name}>
                 {project.name}

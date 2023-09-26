@@ -16,18 +16,13 @@ const TaskCreationWindow : React.FC<CreationModalProps> = ({ open, onClose, proj
   
     const handleCreateTask = () => {
         console.log('handle')
-      // Create a new task object and pass it to the parent component
       const newTask = {
         name: taskName,
         projectName: selectedProject,
       };
       onCreateTask(newTask);
-  
-      // Reset the input fields
       setTaskName('');
       setSelectedProject('');
-  
-      // Close the window
       onClose();
     };
   
@@ -46,8 +41,7 @@ const TaskCreationWindow : React.FC<CreationModalProps> = ({ open, onClose, proj
             boxShadow: 24,
             display: 'flex',
             flexDirection: 'column',
-          }}
-        >
+          }}>
           <Typography variant="h5" sx={{ marginBottom: '16px', color:'#672e94' }}>
             Add Task
           </Typography>

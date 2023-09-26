@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Task } from '../../interfaces/Task'
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -15,18 +15,15 @@ import CreateNew from '../CreateNew/CreateNew';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilePdf } from '@fortawesome/free-solid-svg-icons';
 
-
 interface TasksProps {
   selectedProject: string;
   projects: any;
 }
 
-
-
 const Tasks: React.FC<TasksProps> = ({selectedProject, projects }) => {
   const { tasks, loading, error, addTask, setTasks } = useTasks();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const tasksService = new TasksService('https://localhost:44385');
+  const tasksService = new TasksService();
   const startTimeFromLocalStorage = localStorage.getItem('startTime');
   const [timer, setTimer] = useState(Number(localStorage.getItem('elapsedTime')) || 0);
   const [isRunning, setIsRunning] = useState(localStorage.getItem('isRunning') === 'true' || false);
@@ -70,31 +67,20 @@ const Tasks: React.FC<TasksProps> = ({selectedProject, projects }) => {
 
   tasks.filter((x: Task) => x.startTime).forEach((task: Task) => {
     const formattedDate = dayjs(task.startTime).format('YYYY-MM-DD');
-
     if (!taskGroups[formattedDate]) {
         taskGroups[formattedDate] = [];
     }
-
     taskGroups[formattedDate].push(task);
   });
 
   const handleStartTask = async (id?: number) => {
     try {
-      // Call the startTask method from your service
       const now = Date.now();
       setStartTime(now);
       setIsRunning(true);
       localStorage.setItem('elapsedTime', timer.toString());
       localStorage.setItem('isRunning', 'true');
       localStorage.setItem('startTime', now.toString());
-      //const updatedTask = await tasksService.startTask(task);
-
-      // if (updatedTask) {
-      //   //setStartedTask(updatedTask);
-      //   //setError(null); // Clear any previous error
-      // } else {
-      //   setErrorMessage('Failed to start the task.');
-      // }
     } catch (ex) {
       setErrorMessage('An error occurred while starting the task.');
       console.error('An error occurred:', ex);
@@ -134,8 +120,7 @@ const Tasks: React.FC<TasksProps> = ({selectedProject, projects }) => {
         setTasks((prevTasks) =>
         prevTasks.map((t) =>
           t.id === selectedTask ? { ...t, startTime: task.startTime, endTime: task.endTime, duration: task.duration } : t
-        )
-      );
+        ));
       }
       else
       {
@@ -167,13 +152,13 @@ const Tasks: React.FC<TasksProps> = ({selectedProject, projects }) => {
       console.error('An error occurred:', ex);
     }
   }
+
   return (
     <Box
       display="flex"
       alignItems="center"
       justifyContent="center"
-      flexDirection="column"
-    >
+      flexDirection="column">
       <Button onClick={generateReport}
           sx={{
             marginTop: '4vh',
@@ -192,7 +177,6 @@ const Tasks: React.FC<TasksProps> = ({selectedProject, projects }) => {
       <Box sx={{
         marginTop: '-5vh',
         marginBottom: '5vh',
-        //margin: '5%', 
         borderRadius: '10px', 
         background: 'white', 
         padding: '3%', 
@@ -207,15 +191,13 @@ const Tasks: React.FC<TasksProps> = ({selectedProject, projects }) => {
           onClick={() => handleStartTask()}
           sx={{
             ...roundButtonStyle,
-            backgroundColor: '#c4c4c4', // Make the background transparent
+            backgroundColor: '#c4c4c4',
             border: '1px solid transparent',
             '&:hover': {
-              backgroundColor: 'transparent', // Keep background transparent on hover
-              border: '1px solid #af7fd4'
-            },
+              backgroundColor: 'transparent', 
+              border: '1px solid #af7fd4'},
             marginRight: '20%'
-          }}
-        >
+          }} >
           <PlayArrowIcon style={{ color: 'green' }} />
         </IconButton>
         <Typography sx={{ marginRight: '20%'}}>{Math.floor(timer / 3600).toString().padStart(2, '0')}:{Math.floor(timer % 3600 / 60).toString().padStart(2, '0')}:{Math.floor(timer % 60).toString().padStart(2, '0')}</Typography>
@@ -225,14 +207,13 @@ const Tasks: React.FC<TasksProps> = ({selectedProject, projects }) => {
           onClick={() => handleStopTask()}
           sx={{
             ...roundButtonStyle,
-            backgroundColor: '#c4c4c4', // Make the background transparent
+            backgroundColor: '#c4c4c4',
             border: '1px solid transparent',
             '&:hover': {
-              backgroundColor: 'transparent', // Keep background transparent on hover
+              backgroundColor: 'transparent', 
               border: '1px solid #af7fd4'
             },
-          }}
-        >
+          }}>
           <StopIcon style={{ color: 'red' }} />
         </IconButton>
       </Box>
@@ -247,13 +228,13 @@ const Tasks: React.FC<TasksProps> = ({selectedProject, projects }) => {
           onChange={radioChange}>
           <Paper sx={{padding:'20px', marginTop:'3%'}} elevation={3}>
           <Box
-          margin='16px'
-          key='-1'
-          padding='16px'
-          display="flex"
-          alignItems="center"
-          justifyContent="flex-start"
-          flexDirection="row">
+            margin='16px'
+            key='-1'
+            padding='16px'
+            display="flex"
+            alignItems="center"
+            justifyContent="flex-start"
+            flexDirection="row">
             <Table>
                 <TableBody>
                     <TableRow>
@@ -274,21 +255,16 @@ const Tasks: React.FC<TasksProps> = ({selectedProject, projects }) => {
           </Paper>
         </RadioGroup></form>
       </Box>
-
       <Box sx={{margin: '5%', borderRadius: '10px', background: 'white', padding: '3%', width: '80%'}}>
         <Typography sx={{color: 'black'}} variant="h5">Finished tasks</Typography>
           { Object.entries(taskGroups).map(([date, tasksForDate]) => (
             <Paper sx={{padding:'20px', marginTop:'3%'}} elevation={3}  key={date}>
               <Typography sx={{ textDecoration: 'underline', fontStyle: 'italic' }} variant="h6">{dayjs(date).format('ddd, DD/MM')}</Typography>
                     {tasksForDate.map((task) => (
-                    <TaskDisplay task= {task}/>
-                  ))}
-            </Paper>
-          ))}
+                    <TaskDisplay task= {task}/>))}
+            </Paper>))}
       </Box>
-
     </Box>
-    
   );
 };
 

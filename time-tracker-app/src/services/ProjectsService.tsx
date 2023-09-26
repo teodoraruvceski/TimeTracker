@@ -1,11 +1,9 @@
-import { Project } from '../interfaces/Project'; // Import your Task model
+import { Project } from '../interfaces/Project';
+
 
 export class ProjectsService {
-  private readonly baseUrl: string; // Specify your API base URL
-
-  constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
-  }
+  private readonly baseUrl: string = 'https://localhost:44385';
+  
 
   async addProject(task: Project): Promise<Project | null> {
     try {

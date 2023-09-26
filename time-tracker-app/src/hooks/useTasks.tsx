@@ -8,31 +8,24 @@ function useTasks() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Define the URL of your backend API
-    //const apiUrl = 'https://localhost:44385/api/tasks'//process.env.SERVER_URL as string;
-
-    // Make a GET request to fetch tasks
+ 
     axios
       .get('https://localhost:44385/api/tasks')
       .then((response) => {
-        setTasks(response.data); // Update the tasks state with the fetched data
-        setLoading(false); // Set loading to false
+        setTasks(response.data);
+        setLoading(false);
       })
       .catch((err) => {
-        setError(err); // Set the error state if the request fails
-        setLoading(false); // Set loading to false
-        console.log(err);
+        setError(err); 
+        setLoading(false); 
       });
   }, []);
 
   const addTask = (newTask: Task) => {
-    //setTasks((prevTasks) => [...prevTasks, newTask]);
     const updatedTasks = [...tasks, { ...newTask }];
-
-  setTasks(updatedTasks);
+    setTasks(updatedTasks);
   };
-
-
+  
   return { tasks, loading, error, addTask, setTasks };
 }
 

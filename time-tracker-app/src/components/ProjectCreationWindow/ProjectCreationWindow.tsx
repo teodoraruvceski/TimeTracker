@@ -13,9 +13,7 @@ const ProjectCreationWindow : React.FC<CreationModalProps> = ({ open, onClose, o
   
     const handleCreateProject = () => {
       onCreateProject(projectName);
-  
       setProjectName('');
-
       onClose();
     };
   
@@ -34,8 +32,7 @@ const ProjectCreationWindow : React.FC<CreationModalProps> = ({ open, onClose, o
             boxShadow: 24,
             display: 'flex',
             flexDirection: 'column',
-          }}
-        >
+          }}>
           <Typography variant="h5" sx={{ marginBottom: '16px', color:'#672e94' }}>
             Add Project
           </Typography>
@@ -43,14 +40,13 @@ const ProjectCreationWindow : React.FC<CreationModalProps> = ({ open, onClose, o
             label="Project Name"
             value={projectName}
             onChange={(e) => setProjectName(e.target.value)}
-            sx={{marginBottom: '16px',}}
-          />
-         
-          <Button sx={{backgroundColor:'#af7fd4',
-          '&:hover': {
-            backgroundColor: '#e9daf5',
-            borderColor: '#af7fd4' }}} 
-            variant="contained" color="primary" onClick={handleCreateProject}>
+            sx={{marginBottom: '16px',}}/>
+          <Button sx={{
+            backgroundColor:'#af7fd4',
+            '&:hover': {
+              backgroundColor: '#e9daf5',
+              borderColor: '#af7fd4' }}} 
+              variant="contained" color="primary" onClick={handleCreateProject}>
             Create Project
           </Button>
         </Box>
